@@ -1,0 +1,19 @@
+# tinted-herdr template configuration.
+#
+# Each entry is rendered by tinted-builder-rust against every scheme of the
+# listed `supported-systems`, producing one Herdr desktop theme file per scheme
+# in the `themes/` directory.
+#
+# The output filename stem (e.g. `base16-ayu-dark`) is the scheme id that Tinty
+# matches against when it applies a theme.
+#
+# Base16 and Base24 use separate templates because Base24 defines its own
+# bright ANSI colors (base12 to base17), which Base16 schemes do not have.
+
+base16:
+  filename: themes/{{ scheme-system }}-{{ scheme-slug }}.json
+  supported-systems: [base16]
+
+base24:
+  filename: themes/{{ scheme-system }}-{{ scheme-slug }}.json
+  supported-systems: [base24]

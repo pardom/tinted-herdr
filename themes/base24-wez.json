@@ -1,0 +1,35 @@
+{
+  "background": "#000000",
+  "foreground": "#aeaeae",
+  "selection": "#555555",
+  "cursor": "#aeaeae",
+  "ansi": [
+    "#000000", "#cc5555", "#55cc55", "#5555ff", "#5455cb", "#cc55cc", "#7acaca", "#aeaeae",
+    "#727272", "#ff5555", "#55ff55", "#ffff55", "#5555ff", "#ff55ff", "#55ffff", "#ffffff"
+  ],
+  "colors": {
+    "background": "#000000",
+    "canvas": "#000000",
+    "chrome": "#000000",
+    "surface": "#000000",
+    "popover": "#000000",
+    "raised": "#555555",
+    "hover": "#555555",
+    "selected": "#555555",
+    "border": "#555555",
+    "input": "#727272",
+    "foreground": "#aeaeae",
+    "muted": "#909090",
+    "dim": "#727272",
+    "accent": "#5455cb",
+    "accent_foreground": "#000000",
+    "solid": "#5455cb",
+    "solid_foreground": "#000000",
+    "selection": "#555555",
+    "working": "#5555ff",
+    "blocked": "#cc5555",
+    "done": "#55cc55",
+    "idle": "#727272",
+    "unknown": "#909090"
+  }
+}
