@@ -1,0 +1,51 @@
+# Rebuilds the Herdr themes from the latest Tinted Theming schemes and commits
+# the result, so that Tinty can apply schemes added upstream since the last
+# build.
+
+name: Update themes from the latest schemes
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at 00:00 UTC.
+
+permissions:
+  contents: write
+
+env:
+  BUILDER_VERSION: "0.21.0"
+
+jobs:
+  update-themes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@9a9194f87191a7e9055e3e9b95b8cfb13023bb08 # v4.1.7
+
+      # The ubuntu-latest runner image includes a Rust toolchain.
+      - name: Install tinted-builder-rust
+        run: cargo install --locked "tinted-builder-rust@${BUILDER_VERSION}"
+
+      # The builder only writes files, so the old themes are removed first. This
+      # removes the theme of any scheme that was deleted upstream.
+      - name: Build the themes
+        run: |
+          data_dir="${RUNNER_TEMP}/tinted-builder"
+          rm -f themes/*.json
+          tinted-builder-rust sync --data-dir "$data_dir"
+          tinted-builder-rust build --data-dir "$data_dir" .
+          echo "SCHEMES_COMMIT=$(git -C "$data_dir/schemes" rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: Commit and push the changes, if any
+        run: |
+          if [ -z "$(git status --porcelain themes)" ]; then
+            echo "The themes are up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add themes
+          git commit \
+            -m "Regenerate themes from the current Tinted Theming schemes." \
+            -m "This rebuild uses tinted-builder-rust ${BUILDER_VERSION} against schemes commit ${SCHEMES_COMMIT}."
+          git push
